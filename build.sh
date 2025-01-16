@@ -9,7 +9,7 @@ OBJECT_RELEASE_DIR="build/release/obj"
 SFML_DIR="vendor/SFML"
 
 # FILES
-SOURCE_FILES=$(find "$SOURCE_DIR" -name "*.cpp")
+SOURCE_FILES=($(find "$SOURCE_DIR" -name "*.cpp"))
 OBJECT_FILES_DEBUG=($(for file in "${SOURCE_FILES[@]}"; do echo "$OBJECT_DEBUG_DIR/$(basename "${file%.*}.o")"; done))
 OBJECT_FILES_RELEASE=($(for file in "${SOURCE_FILES[@]}"; do echo "$OBJECT_RELEASE_DIR/$(basename "${file%.*}.o")"; done))
 
