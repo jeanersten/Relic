@@ -19,14 +19,12 @@ CXX="g++"
 # COMPILER FLAGS
 INCLUDE_FLAGS="-Ivendor/SFML/include -Isrc"
 LIBRARY_FLAGS="-Lvendor/SFML/lib"
-LIBRARY_FLAGS_DEBUG="$LIBRARY_FLAGS -lstdc++exp \
-                                    -lsfml-graphics-d -lsfml-window-d -lsfml-system-d -lsfml-audio-d -lsfml-network-d"
+LIBRARY_FLAGS_DEBUG="$LIBRARY_FLAGS -lsfml-graphics-d -lsfml-window-d -lsfml-system-d -lsfml-audio-d -lsfml-network-d"
 
-LIBRARY_FLAGS_RELEASE="$LIBRARY_FLAGS -lstdc++exp \
-                                      -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network"
-CXX_FLAGS="-m64 -pedantic-errors -std=c++23 -Wall -Wextra -Wsign-conversion $INCLUDE_FLAGS"
-CXX_FLAGS_DEBUG="-ggdb -DDEBUG_BUILD"
-CXX_FLAGS_RELEASE="-O2 -DNDEBUG -DRELEASE_BUILD"
+LIBRARY_FLAGS_RELEASE="$LIBRARY_FLAGS -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network"
+CXX_FLAGS="-m64 -pedantic-errors -std=c++20 -Wall -Wextra -Wsign-conversion $INCLUDE_FLAGS"
+CXX_FLAGS_DEBUG="-ggdb -DBUILD_DEBUG"
+CXX_FLAGS_RELEASE="-O2 -DNDEBUG -DBUILD_RELEASE"
 
 # EXECUTABLE TARGET
 TARGET="Relic"
@@ -89,13 +87,6 @@ function build_debug() {
         $CXX $CXX_FLAGS $CXX_FLAGS_DEBUG -c "$src" -o "$obj" || { log "${COLOR_ORANGE}Debug build failed.${COLOR_RESET}"; exit 1; }
     done
 
-    cp $SFML_DIR/bin/openal32.dll $BINARY_DEBUG_DIR/
-    cp $SFML_DIR/bin/sfml-audio-d-2.dll $BINARY_DEBUG_DIR/
-    cp $SFML_DIR/bin/sfml-graphics-d-2.dll $BINARY_DEBUG_DIR/
-    cp $SFML_DIR/bin/sfml-network-d-2.dll $BINARY_DEBUG_DIR/
-    cp $SFML_DIR/bin/sfml-system-d-2.dll $BINARY_DEBUG_DIR/
-    cp $SFML_DIR/bin/sfml-window-d-2.dll $BINARY_DEBUG_DIR/
-
     log "Linking all debug files to executable..."
     $CXX $CXX_FLAGS $CXX_FLAGS_DEBUG -o "$TARGET_DEBUG" "${OBJECT_FILES_DEBUG[@]}" $LIBRARY_FLAGS_DEBUG || { log "${COLOR_ORANGE}Debug build failed.${COLOR_RESET}"; exit 1; }
     log "${COLOR_GREEN}Debug build succeeded. Executable created at $BINARY_DEBUG_DIR.${COLOR_RESET}"
@@ -111,13 +102,6 @@ function build_release() {
         log "Compiling $src to $obj..."
         $CXX $CXX_FLAGS $CXX_FLAGS_RELEASE -c "$src" -o "$obj" || { log "${COLOR_ORANGE}Release build failed.${COLOR_RESET}"; exit 1; }
     done
-
-    cp $SFML_DIR/bin/openal32.dll $BINARY_RELEASE_DIR/
-    cp $SFML_DIR/bin/sfml-audio-2.dll $BINARY_RELEASE_DIR/
-    cp $SFML_DIR/bin/sfml-graphics-2.dll $BINARY_RELEASE_DIR/
-    cp $SFML_DIR/bin/sfml-network-2.dll $BINARY_RELEASE_DIR/
-    cp $SFML_DIR/bin/sfml-system-2.dll $BINARY_RELEASE_DIR/
-    cp $SFML_DIR/bin/sfml-window-2.dll $BINARY_RELEASE_DIR/
 
     log "Linking all release files to executable..."
     $CXX $CXX_FLAGS $CXX_FLAGS_RELEASE -o "$TARGET_RELEASE" "${OBJECT_FILES_RELEASE[@]}" $LIBRARY_FLAGS_RELEASE || { log "${COLOR_ORANGE}Release build failed.${COLOR_RESET}"; exit 1; }

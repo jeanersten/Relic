@@ -1,5 +1,4 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#pragma once
 
 #include <fstream>
 #include <mutex>
@@ -92,7 +91,7 @@ void Logger::logContextMessage(LogLevel message_level, const std::string& file_n
     m_getInstance().m_logMessage(message_level, formatted_message.str());
 }
 
-#ifdef DEBUG_BUILD
+#ifdef BUILD_DEBUG
 #define LOG_TRACE(message, ...) Logger::logDefaultMessage(Logger::LogLevel::TRACE, message, ##__VA_ARGS__)
 #define LOG_DEBUG(message, ...) Logger::logDefaultMessage(Logger::LogLevel::DEBUG, message, ##__VA_ARGS__)
 #define LOG_INFO(message, ...) Logger::logDefaultMessage(Logger::LogLevel::INFO, message, ##__VA_ARGS__)
@@ -101,14 +100,11 @@ void Logger::logContextMessage(LogLevel message_level, const std::string& file_n
 #define LOG_CRITICAL(message, ...) Logger::logDefaultMessage(Logger::LogLevel::CRITICAL, message, ##__VA_ARGS__)
 #endif
 
-#ifdef RELEASE_BUILD
+#ifdef BUILD_RELEASE
 #define LOG_TRACE(message, ...) // Removed for release
 #define LOG_DEBUG(message, ...) // Removed for release
 #define LOG_INFO(message, ...) Logger::logContextMessage(Logger::LogLevel::INFO, __FILE__, __LINE__, message, ##__VA_ARGS__)
 #define LOG_WARNING(message, ...) Logger::logContextMessage(Logger::LogLevel::WARNING, __FILE__, __LINE__, message, ##__VA_ARGS__)
 #define LOG_ERROR(message, ...) Logger::logContextMessage(Logger::LogLevel::ERROR, __FILE__, __LINE__, message, ##__VA_ARGS__)
 #define LOG_CRITICAL(message, ...) Logger::logContextMessage(Logger::LogLevel::CRITICAL, __FILE__, __LINE__, message, ##__VA_ARGS__)
-#endif
-
-
 #endif
