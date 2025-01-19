@@ -20,7 +20,6 @@ CXX="g++"
 INCLUDE_FLAGS="-Ivendor/SFML/include -Isrc"
 LIBRARY_FLAGS="-Lvendor/SFML/lib"
 LIBRARY_FLAGS_DEBUG="$LIBRARY_FLAGS -lsfml-graphics-d -lsfml-window-d -lsfml-system-d -lsfml-audio-d -lsfml-network-d"
-
 LIBRARY_FLAGS_RELEASE="$LIBRARY_FLAGS -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network"
 CXX_FLAGS="-m64 -pedantic-errors -std=c++20 -Wall -Wextra -Wsign-conversion $INCLUDE_FLAGS"
 CXX_FLAGS_DEBUG="-ggdb -DBUILD_DEBUG"
